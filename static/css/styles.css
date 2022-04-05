@@ -1,0 +1,16 @@
+body{
+    background-color: lightgray;
+    font-family: arial;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer{
+    position:absolute;
+    bottom: 0;
+    right: 0;
+    left :0;
+    text-align: center;
+    padding : 1rem;
+}

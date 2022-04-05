@@ -2,14 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Demo ML</title>
+    <title>Yüz İfadesi Tahmini</title>
+    <link rel="stylesheet" href="static/css/styles.css">
 </head>
 <body>
-    <h1>Demo ML</h1>
-    <br><br><br>
-    <form action="/upload_image.php">
-        <input type="file" id="myFile" name="filename">
-        <input type="submit" value="UPLOAD">
+    <h2>Bir yüz resmi yükleyiniz</h2>
+    <br><br>
+    <p>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul style="list-style-type:none;">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        {% endwith %}
+    </p>
+    {% if filename %}
+        <div>
+            <img width="250px" src="{{ url_for('display', filename=filename) }}">
+        </div>
+    {% endif %}
+    <form method="POST" action="/" enctype="multipart/form-data">
+        <dl>
+            <p>
+                <input type="file" name="file" autocomplete="off" required>
+            </p>
+        </dl>
+        <p>
+            <input type="submit" value="Gönder">
+        </p>
     </form>
+    <div class="footer">
+        <p>Made by Abdulkadir Durmaz</p>
+    </div>
 </body>
 </html>

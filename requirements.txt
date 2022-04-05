@@ -20,5 +20,5 @@ blinker~=1.4
 greenlet~=1.1.2
 setuptools~=50.3.2
 
-mediapipe~=0.8.8.1
+mediapipe~=0.8.9.1
 opencv-python~=4.5.4.58

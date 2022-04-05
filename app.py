@@ -103,5 +103,6 @@ def Prediction(filename):
 
 
 if __name__ == "__main__":
-    port = int(os.getenv('PORT'))
-    app.run(port=port)
+    #port = int(os.getenv('PORT'))
+    #app.run(port=port)
+    app.run()

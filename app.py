@@ -4,13 +4,10 @@ import matplotlib.pyplot as plt
 import keras
 from keras.preprocessing import image
 import os
-import urllib.request
 from werkzeug.utils import secure_filename
 from PIL import Image
 import PIL
 import time
-import mediapipe
-import cv2
 
 
 uploads_folder = "./static/uploads"
@@ -103,5 +100,6 @@ def Prediction(filename):
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    #port = int(os.environ.get('PORT', 5000))
+    #app.run(host='0.0.0.0', port=port)
+    app.run()

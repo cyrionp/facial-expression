@@ -39,6 +39,9 @@ def upload():
         filename = secure_filename(file.filename)
         _filename = "./static/uploads/"+filename
 
+        for i in os.listdir("./static/uploads/"):
+            os.remove(i)
+
         file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
 
         #img = Image.open(_filename)

@@ -10,7 +10,7 @@ matplotlib = "*"
 keras = "*"
 Flask = "*"
 Werkzeug = "*"
-tensorflow = "*"
+tensorflow-cpu = "*"
 
 [dev-packages]
 

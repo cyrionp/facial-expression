@@ -29,7 +29,7 @@ def home():
 @app.route("/", methods=["POST"])
 def upload():
     for i in os.listdir("./static/uploads/"):
-        os.remove(i)
+        os.remove("./static/uploads/"+i)
 
     if "file" not in request.files:
         flash("Dosya yok")

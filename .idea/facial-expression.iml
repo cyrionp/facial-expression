@@ -5,7 +5,7 @@
       <excludeFolder url="file://$MODULE_DIR$/appvenv" />
       <excludeFolder url="file://$MODULE_DIR$/facialenv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.9 (facial-expression)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Pipenv (facial-expression)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

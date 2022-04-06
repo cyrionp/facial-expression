@@ -30,6 +30,7 @@ def home():
 def upload():
     for i in os.listdir("./static/uploads/"):
         os.remove("./static/uploads/"+i)
+        print(i+" silindi")
 
     if "file" not in request.files:
         flash("Dosya yok")

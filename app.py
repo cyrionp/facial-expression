@@ -5,8 +5,6 @@ import keras
 from keras.preprocessing import image
 import os
 from werkzeug.utils import secure_filename
-from PIL import Image
-import PIL
 import time
 
 

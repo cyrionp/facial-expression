@@ -28,6 +28,9 @@ def home():
 
 @app.route("/", methods=["POST"])
 def upload():
+    for i in os.listdir("./static/uploads/"):
+        os.remove(i)
+
     if "file" not in request.files:
         flash("Dosya yok")
         return redirect(request.url)
@@ -38,9 +41,6 @@ def upload():
     if file and isAllowed(file.filename):
         filename = secure_filename(file.filename)
         _filename = "./static/uploads/"+filename
-
-        for i in os.listdir("./static/uploads/"):
-            os.remove(i)
 
         file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
 

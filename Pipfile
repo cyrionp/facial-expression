@@ -11,6 +11,9 @@ keras = "*"
 Flask = "*"
 Werkzeug = "*"
 tensorflow-cpu = "*"
+opencv-python = "*"
+mtcnn = "*"
+Pillow = "*"
 
 [dev-packages]
 

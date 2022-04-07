@@ -11,7 +11,7 @@
     <p>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
-            <ul style="list-style-type:none;">
+            <ul>
                 {% for message in messages %}
                     <li>{{ message }}</li>
                 {% endfor %}
@@ -24,18 +24,15 @@
             <img width="250px" src="{{ url_for('display', filename=filename) }}">
         </div>
     {% endif %}
-    <form method="POST" action="/" enctype="multipart/form-data">
-        <dl>
-            <p>
-                <input type="file" name="file" autocomplete="off" required>
-            </p>
-        </dl>
+    <form method="POST" action="/" id="upload_form" enctype="multipart/form-data">
         <p>
-            <input type="submit" value="Gönder">
+            <input type="file" name="file" autocomplete="off" required>
         </p>
+        <button id="upload" type="submit" form="upload_form">GÖNDER</button>
     </form>
     <div class="footer">
         <p>Made by Abdulkadir Durmaz</p>
     </div>
 </body>
+<script src="/static/js/spinner.js"></script>
 </html>

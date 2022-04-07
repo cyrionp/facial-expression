@@ -42,7 +42,6 @@ def upload():
         DeleteFilesInDir(uploads_dir)
         file.save(os.path.join(uploads_dir, filename))
         flash("Resim yüklendi")
-        time.sleep(2)
         flash(Prediction(filename))
         return render_template("index.html", filename=filename)
     else:

@@ -4,7 +4,6 @@ import keras
 from keras.preprocessing import image
 import os
 from werkzeug.utils import secure_filename
-import time
 import cv2
 from mtcnn import MTCNN
 from PIL import Image

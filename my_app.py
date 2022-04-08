@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
+from flask_caching import Cache
 import numpy as np
 import keras
 from keras.preprocessing import image
@@ -7,15 +8,23 @@ from werkzeug.utils import secure_filename
 import cv2
 from mtcnn import MTCNN
 from PIL import Image
+import time
 
 uploads_dir = "./static/uploads/"
 faces_dir = "./static/faces/"
 allowed_files = {"png", "jpg", "jpeg"}
 
+config = {
+    "DEBUG": False,
+    "CACHE_TYPE": "SimpleCache",
+    "CACHE_DEFAULT_TIMEOUT": 300,
+    "MAX_CONTENT_LENGTH": 16 * 1024 * 1024
+}
+
 app = Flask(__name__)
 app.secret_key = "Dusun53Ne1$01mu5ZLiR@cIK"
-app.config["UPLOAD_FOLDER"] = uploads_dir
-app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
+app.config.from_mapping(config)
+cache = Cache(app)
 
 
 def isAllowed(filename):
@@ -68,53 +77,62 @@ def VerifyJpeg(path):
     return True
 
 
-def Prediction(filename):
+@cache.cached(key_prefix="LoadModelAndDetector")
+def LoadModelAndDetector():
+    global model, detector
+    model = keras.models.load_model("mymodel.h5")
+    detector = MTCNN()
+
+
+def PredictionProcesses(filename):
     my_expressions = ("kızgın", "iğrenmiş", "korkmuş", "mutlu", "üzgün", "şaşırmış", "nötr")
 
-    def PredictionProcesses():
-        model = keras.models.load_model("mymodel.h5")
-        detector = MTCNN()
+    start_timer = time.time()
+    LoadModelAndDetector()
+    print(f'LoadModelAndDetector run süresi: {time.time() - start_timer}')
 
-        img = cv2.imread(uploads_dir + filename)
-        detections = detector.detect_faces(img)
+    img = cv2.imread(uploads_dir + filename)
+    detections = detector.detect_faces(img)
 
-        if detections:
-            for face in detections:
-                score = face["confidence"]
-                if score >= 0.80:
-                    x, y, w, h = face["box"]
-                    detected_face = img[int(y):int(y + h), int(x):int(x + w)]
+    if detections:
+        for face in detections:
+            score = face["confidence"]
+            if score >= 0.80:
+                x, y, w, h = face["box"]
+                detected_face = img[int(y):int(y + h), int(x):int(x + w)]
 
-                    DeleteFilesInDir(faces_dir)
-                    cv2.imwrite(faces_dir + filename, detected_face)
-                    print("Resim kaydedildi: " + filename)
+                DeleteFilesInDir(faces_dir)
+                cv2.imwrite(faces_dir + filename, detected_face)
+                print("Resim kaydedildi: " + filename)
 
-                    img = image.load_img(faces_dir + filename, color_mode="grayscale", target_size=(48, 48))
+                img = image.load_img(faces_dir + filename, color_mode="grayscale", target_size=(48, 48))
 
-                    x = image.img_to_array(img)
-                    x = np.expand_dims(x, axis=0)
-                    x /= 255
-                    custom = model.predict(x)
+                x = image.img_to_array(img)
+                x = np.expand_dims(x, axis=0)
+                x /= 255
+                custom = model.predict(x)
 
-                    minimum_value = 0.000000000000000000001
-                    predictions = custom[0]
-                    for i in range(0, len(predictions)):
-                        if predictions[i] > minimum_value:
-                            minimum_value = predictions[i]
-                            most_index = i
+                minimum_value = 0.000000000000000000001
+                predictions = custom[0]
+                for i in range(0, len(predictions)):
+                    if predictions[i] > minimum_value:
+                        minimum_value = predictions[i]
+                        most_index = i
 
-                    print('Yüz ifadeniz tahminennn: ', my_expressions[most_index])
-                    return f"Yüz ifadeniz tahminen: {my_expressions[most_index]}"
-        else:
-            return "Resimde yüz bulunamadı"
+                print('Yüz ifadeniz tahminennn: ', my_expressions[most_index])
+                return f"Yüz ifadeniz tahminen: {my_expressions[most_index]}"
+    else:
+        return "Resimde yüz bulunamadı"
 
+
+def Prediction(filename):
     file_extension = os.path.splitext(uploads_dir + filename)[1].lower()
 
     if file_extension == ".jpeg":
         if VerifyJpeg(uploads_dir + filename):
-            return PredictionProcesses()
+            return PredictionProcesses(filename)
     else:
-        return PredictionProcesses()
+        return PredictionProcesses(filename)
 
 
 if __name__ == '__main__':

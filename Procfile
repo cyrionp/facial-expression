@@ -1,1 +1,1 @@
-web: gunicorn my_app:app --preload --timeout 100
+web: gunicorn my_app:app ${PORT} --preload --timeout 100

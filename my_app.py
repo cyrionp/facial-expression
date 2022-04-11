@@ -83,7 +83,7 @@ def load_model_and_detector():
     global model, detector
     start_timer = time.time()
     model = keras.models.load_model("mymodel.h5")
-    print(f'load_model_and_detector run süresi: {time.time() - start_timer}')
+    print(f'içeride model load run süresi: {time.time() - start_timer}')
     detector = MTCNN()
 
 
